@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blackout City - Roleplay Community</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #030303; color: #ffffff; min-height: 100vh; padding-bottom: 50px; overflow-x: hidden; }
+        
+        /* Navigation Bar */
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 50px; background: rgba(3,3,3,0.95); border-bottom: 1px solid rgba(255, 59, 48, 0.2); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(12px); }
+        
+        /* Server Logo Styling */
+        .nav-logo { display: flex; align-items: center; gap: 14px; text-decoration: none; cursor: pointer; }
+        .server-logo-img { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; border: 2px solid #ff3b30; box-shadow: 0 0 15px rgba(255, 59, 48, 0.5); }
+        .nav-logo span { font-size: 19px; font-weight: 900; color: #fff; letter-spacing: 2.5px; text-transform: uppercase; text-shadow: 0 0 10px rgba(255, 59, 48, 0.4); }
+
+        .nav-links { display: flex; gap: 30px; align-items: center; }
+        nav a:not(.nav-logo) { color: #999; text-decoration: none; font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; cursor: pointer; transition: 0.3s ease; }
+        nav a:not(.nav-logo):hover, nav a.active { color: #fff; text-shadow: 0 0 12px rgba(255, 59, 48, 0.8); }
+
+        /* Home Hero Banner */
+        .home-hero-container { text-align: center; padding: 80px 20px 40px; }
+        .big-server-logo { width: 170px; height: 170px; border-radius: 50%; object-fit: cover; border: 3px solid #ff3b30; box-shadow: 0 0 40px rgba(255, 59, 48, 0.6); margin-bottom: 25px; animation: pulseGlow 2.5s infinite; }
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 20px rgba(255, 59, 48, 0.4); transform: scale(1); }
+            50% { box-shadow: 0 0 45px rgba(255, 59, 48, 0.8); transform: scale(1.02); }
+            100% { box-shadow: 0 0 20px rgba(255, 59, 48, 0.4); transform: scale(1); }
+        }
+        .welcome-title { font-size: 34px; text-transform: uppercase; font-weight: 900; letter-spacing: 3px; color: #ffffff; text-shadow: 0 0 20px rgba(255, 59, 48, 0.6); }
+
+        /* Header Section */
+        .header-section { text-align: center; padding: 40px 20px 20px; }
+        h1 { font-size: 38px; text-transform: uppercase; font-weight: 900; letter-spacing: 3px; margin-bottom: 10px; background: linear-gradient(90deg, #ffffff, #ff3b30); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        p.subtitle { color: #888; font-size: 13px; text-transform: uppercase; letter-spacing: 2px; font-weight: 600; }
+        
+        /* View Sections */
+        .page-view { display: none !important; padding: 20px 20px 40px; animation: fadeIn 0.4s ease-in-out; }
+        .page-view.active { display: block !important; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Rules Container */
+        .rules-wrapper { max-width: 950px; margin: 0 auto; background: rgba(12, 12, 12, 0.95); border: 1px solid rgba(255, 59, 48, 0.2); border-radius: 14px; padding: 45px; box-shadow: 0 20px 50px rgba(0,0,0,0.8); backdrop-filter: blur(10px); }
+        .rules-wrapper h2 { font-size: 26px; text-transform: uppercase; margin-bottom: 25px; color: #ff3b30; font-weight: 900; letter-spacing: 1.5px; border-bottom: 2px solid rgba(255, 59, 48, 0.4); padding-bottom: 12px; text-shadow: 0 0 10px rgba(255, 59, 48, 0.3); }
+        .rule-item { margin-bottom: 22px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 18px; }
+        .rule-item p { font-size: 14px; color: #ccc; line-height: 1.7; white-space: pre-line; letter-spacing: 0.3px; }
+
+        /* Cards Container */
+        .cards-container { display: flex; justify-content: center; gap: 25px; max-width: 1450px; margin: 20px auto; padding: 0 20px; flex-wrap: wrap; }
+        .app-card { 
+            width: 280px; height: 390px; position: relative; background-size: cover; background-position: center; 
+            border: 1px solid rgba(255, 59, 48, 0.3); border-radius: 14px; padding: 30px 20px; display: flex; flex-direction: column; 
+            justify-content: flex-end; text-decoration: none; overflow: hidden; transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); cursor: pointer; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+        }
+        .app-card::after { 
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+            background: linear-gradient(to top, rgba(3,3,3,0.95) 25%, rgba(3,3,3,0.5) 70%, rgba(3,3,3,0.2) 100%); z-index: 1; 
+            transition: 0.3s;
+        }
+        .app-card > * { position: relative; z-index: 2; }
+        .app-card:hover { border-color: #ff3b30; transform: translateY(-10px) scale(1.02); box-shadow: 0 20px 40px rgba(255, 59, 48, 0.4); }
+        .app-card:hover::after { background: linear-gradient(to top, rgba(3,3,3,0.9) 30%, rgba(255,59,48,0.25) 100%); }
+        .card-content h3 { font-size: 15px; font-weight: 900; text-transform: uppercase; color: #fff; letter-spacing: 1.5px; text-shadow: 0 2px 5px rgba(0,0,0,0.8); }
+
+        /* Form Layout */
+        .form-wrapper { max-width: 700px; margin: 0 auto; background: rgba(12, 12, 12, 0.95); border: 1px solid rgba(255, 59, 48, 0.2); border-radius: 14px; padding: 45px; box-shadow: 0 20px 50px rgba(0,0,0,0.8); backdrop-filter: blur(10px); }
+        .form-wrapper h2 { font-size: 24px; text-transform: uppercase; margin-bottom: 8px; color: #fff; font-weight: 900; letter-spacing: 1px; }
+        .form-wrapper p.desc { font-size: 12px; color: #888; text-transform: uppercase; margin-bottom: 25px; border-bottom: 2px solid rgba(255, 59, 48, 0.4); padding-bottom: 10px; letter-spacing: 1px; font-weight: 600; }
+        .input-group { margin-bottom: 22px; }
+        label { display: block; font-size: 12px; font-weight: bold; text-transform: uppercase; margin-bottom: 8px; color: #ccc; letter-spacing: 1px; }
+        input, select, textarea { width: 100%; padding: 14px; background: rgba(20, 20, 20, 0.9); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; color: #fff; font-size: 14px; transition: 0.3s; }
+        input:focus, select:focus, textarea:focus { border-color: #ff3b30; outline: none; box-shadow: 0 0 10px rgba(255, 59, 48, 0.3); }
+        textarea { resize: vertical; height: 110px; }
+        .submit-btn { background: linear-gradient(90deg, #ff2a2a, #ff3b30); color: white; border: none; padding: 16px; font-size: 14px; font-weight: bold; text-transform: uppercase; border-radius: 8px; cursor: pointer; width: 100%; transition: 0.3s; margin-top: 10px; letter-spacing: 1.5px; box-shadow: 0 5px 20px rgba(255, 59, 48, 0.4); }
+        .submit-btn:hover { opacity: 0.95; transform: translateY(-2px); box-shadow: 0 8px 25px rgba(255, 59, 48, 0.6); }
+        .back-btn { display: inline-block; margin-top: 25px; color: #888; text-decoration: none; font-size: 12px; text-transform: uppercase; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        .back-btn:hover { color: #fff; }
+        .success-message { display: none; text-align: center; color: #4cd137; font-weight: bold; font-size: 16px; margin-top: 20px; text-transform: uppercase; letter-spacing: 1px; }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav>
+        <a class="nav-logo" onclick="showView('home')">
+            <img src="https://i.ibb.co/Fb4M1cNz/content.png" alt="Blackout City Logo" class="server-logo-img">
+            <span>BLACKOUT CITY</span>
+        </a>
+        <div class="nav-links">
+            <a onclick="showView('home')" id="link-home" class="active">Home</a>
+            <a onclick="showView('applications')" id="link-apps">Applications</a>
+            <a onclick="showView('rules')" id="link-rules">Rules</a>
+            <a onclick="showView('home')">Team</a>
+        </div>
+    </nav>
+
+    <!-- Home Section -->
+    <div id="home" class="page-view active">
+        <div class="home-hero-container">
+            <img src="https://i.ibb.co/Fb4M1cNz/content.png" alt="Blackout City Big Logo" class="big-server-logo">
+            <div class="welcome-title">Welcome to Blackout City Roleplay</div>
+        </div>
+    </div>
+
+    <!-- Rules Section -->
+    <div id="rules" class="page-view">
+        <div class="rules-wrapper">
+            <h2>Server Rules & Regulations</h2>
+            <div class="rule-item">
+                <p>1. OOC: Out of Character chat must not be used to share or request HRP/OOC information.
+2. RDM (Random Deathmatch): Killing any player without a valid RP reason is strictly prohibited.
+3. VDM (Vehicle Deathmatch): Using a vehicle as a weapon to run over or kill players is forbidden.
+4. Value of Life (fearRP): You must always value and protect your character's life in dangerous situations.
+5. Power Gaming: Performing actions that are physically impossible or giving yourself unfair advantages (e.g., ignoring heavy injuries after a crash).
+6. Meta Gaming: Using outside information (Discord, streams) that your character did not acquire in-game. All major actions require a video recording.
+7. Fail RP: Actions that contradict realistic roleplay behavior or break the immersion of the city.
+8. Force RP: Forcing another player into a situation without giving them a fair chance to react or defend themselves.
+9. Win RP: Prioritizing "winning" a scenario over good roleplay or inventing rules/items that do not exist in-game.
+10. Combat Logging: Leaving the game or going AFK to avoid an active roleplay scenario.
+11. Combat Storing: Fleeing into a Greenzone during an active gunfight or chase.
+12. Clear Shot: There is no such thing as a "clear shot" exemption when a hostage's life is at risk.
+13. Revenge Kill: Returning to exact revenge after dying requires a 2-hour cooldown, proper RP background, and video proof.
+14. Disrespect / Toxicity: Insulting or mocking a downed player via voice or emotes is strictly banned.
+15. Rule Abuse: Exploiting specific rules or greenzones to provoke players safely.
+16. Pain RP: Reacting realistically to injuries, crashes, and medical events as you would in real life.
+17. Severe Language: Blasphemy or insulting family members will result in immediate bans if reported.
+18. Glitch Abuse: Finding and exploiting bugs without reporting them to the staff team results in a permanent ban.
+19. Cheating / Mods: Using third-party cheats or modifications that give visual or mechanical advantages results in a permanent ban.
+20. Sexual Harassment: Any form of sexual harassment or non-consensual scenarios will lead to severe permanent sanctions.
+21. Skipping Scenarios: Refusing to complete a scene with EMS, Police, or legal staff is prohibited.
+22. Realistic Names: Characters must have realistic first and last names.
+23. Free Looting: Stealing items from third parties without proper context is forbidden.
+25. Asset Transfer: Transferring assets to another player before a character death (perma) or server leave is forbidden.
+26. New Life Rule (NLR): Following a perma-death, a new character must have no relation to the old one.
+27. Reporting Issues: Complete your roleplay scenes first, then report issues to staff later using appropriate commands.
+28. Refunds: All refund requests require valid video proof (recording).
+29. /me Command: Used to describe a physical feeling or expression.
+30. /do Command: Used to describe environmental actions or clarify physical details.
+31. Mass RP: Always assume the city is populated; never act as if areas are completely empty.
+32. Death Rules: Faint/punch deaths allow memory recall; melee weapon deaths require a 12-hour memory loss; gun deaths cause total scene memory loss.
+33. Respecting Female Players: Harassment, toxic behavior, or inappropriate language directed at or around female players is strictly prohibited.
+34. Quality Roleplay: Poor quality roleplay, toxicity, griefing, or trying to ruin other players' experiences leads to unwhitelisting or permanent bans.
+35. Emotes in Combat: Using custom animations or emotes during active fights is strictly forbidden.
+37. Stunt Driving: Unrealistic vehicle jumps or motorcycle stunts resulting in power-gaming are banned.
+38. Fail Driving: Driving vehicles with broken tires or scaling unpaved mountains with standard cars is forbidden.
+39. Mix RP: Bringing out-of-character (Discord) arguments into the game world or vice versa is punishable by bans.
+40. License Plates: Vehicles without license plates cannot be easily tracked; police can impound them for investigation.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Applications Hub Section -->
+    <div id="applications" class="page-view">
+        <div class="header-section">
+            <h1>BLACKOUT CITY APPLICATIONS</h1>
+            <p class="subtitle">Select a department to submit your official application directly to our team</p>
+        </div>
+        <div class="cards-container">
+            <div class="app-card" onclick="showView('whitelist')" style="background-image: url('https://images.unsplash.com/photo-1450133064473-71024230f91b?auto=format&fit=crop&w=600&q=80');">
+                <div class="card-content"><h3>Whitelist (Citizen)</h3></div>
+            </div>
+            <div class="app-card" onclick="showView('gang')" style="background-image: url('https://images.unsplash.com/photo-1563906267088-b029e7101114?auto=format&fit=crop&w=600&q=80');">
+                <div class="card-content"><h3>Gang & Family</h3></div>
+            </div>
+            <div class="app-card" onclick="showView('police')" style="background-image: url('https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=600&q=80');">
+                <div class="card-content"><h3>Police Department</h3></div>
+            </div>
+            <div class="app-card" onclick="showView('ems')" style="background-image: url('https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?auto=format&fit=crop&w=600&q=80');">
+                <div class="card-content"><h3>EMS Department</h3></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Whitelist Form View -->
+    <div id="whitelist" class="page-view">
+        <div class="form-wrapper">
+            <h2>Whitelist Application</h2>
+            <p class="desc">Submit your citizenship request</p>
+            <form id="whitelistForm" class="ajax-form" action="https://formspree.io/f/xrpzwzdy" method="POST">
+                <div class="input-group"><label>Real Name</label><input type="text" name="realName" required></div>
+                <div class="input-group"><label>Character Name</label><input type="text" name="charName" required></div>
+                <div class="input-group"><label>Age</label><input type="number" name="age" required></div>
+                <div class="input-group"><label>Discord ID</label><input type="text" name="discordId" required></div>
+                <div class="input-group"><label>Character Backstory</label><textarea name="backstory" required></textarea></div>
+                <button type="submit" class="submit-btn">Submit Application</button>
+            </form>
+            <div class="success-message">Application Sent Successfully! ✅</div>
+            <a class="back-btn" onclick="showView('applications')">&larr; Back to Applications</a>
+        </div>
+    </div>
+
+    <!-- Gang Form View -->
+    <div id="gang" class="page-view">
+        <div class="form-wrapper">
+            <h2>Gang / Org Application</h2>
+            <p class="desc">Register your organization</p>
+            <form id="gangForm" class="ajax-form" action="https://formspree.io/f/xrpzwzdy" method="POST">
+                <div class="input-group"><label>Gang Name</label><input type="text" name="gangName" required></div>
+                <div class="input-group"><label>Number of Members</label><input type="number" name="membersCount" required></div>
+                <div class="input-group"><label>Gang Backstory</label><textarea name="gangBackstory" required></textarea></div>
+                <div class="input-group"><label>Gang Goals</label><textarea name="gangGoals" required></textarea></div>
+                <button type="submit" class="submit-btn">Submit Application</button>
+            </form>
+            <div class="success-message">Application Sent Successfully! ✅</div>
+            <a class="back-btn" onclick="showView('applications')">&larr; Back to Applications</a>
+        </div>
+    </div>
+
+    <!-- Police Form View -->
+    <div id="police" class="page-view">
+        <div class="form-wrapper">
+            <h2>Police Department Application</h2>
+            <p class="desc">Enforce law and order</p>
+            <form id="policeForm" class="ajax-form" action="https://formspree.io/f/xrpzwzdy" method="POST">
+                <div class="input-group"><label>Character Name</label><input type="text" name="charName" required></div>
+                <div class="input-group"><label>Why do you want to join the LSPD?</label><textarea name="reason" required></textarea></div>
+                <div class="input-group"><label>Have you ever been an officer before?</label><textarea name="experience" required></textarea></div>
+                <div class="input-group"><label>Availability (Hours/Week)</label><input type="text" name="availability" required></div>
+                <button type="submit" class="submit-btn">Submit Application</button>
+            </form>
+            <div class="success-message">Application Sent Successfully! ✅</div>
+            <a class="back-btn" onclick="showView('applications')">&larr; Back to Applications</a>
+        </div>
+    </div>
+
+    <!-- EMS Form View -->
+    <div id="ems" class="page-view">
+        <div class="form-wrapper">
+            <h2>EMS Department Application</h2>
+            <p class="desc">Provide medical services</p>
+            <form id="emsForm" class="ajax-form" action="https://formspree.io/f/xrpzwzdy" method="POST">
+                <div class="input-group"><label>Character Name</label><input type="text" name="charName" required></div>
+                <div class="input-group"><label>Why do you want to join EMS?</label><textarea name="reason" required></textarea></div>
+                <div class="input-group"><label>Medical Knowledge / Experience</label><textarea name="medicalExp" required></textarea></div>
+                <div class="input-group"><label>Are you familiar with triage?</label>
+                    <select name="triageFamiliarity"><option>Yes</option><option>No</option></select>
+                </div>
+                <button type="submit" class="submit-btn">Submit Application</button>
+            </form>
+            <div class="success-message">Application Sent Successfully! ✅</div>
+            <a class="back-btn" onclick="showView('applications')">&larr; Back to Applications</a>
+        </div>
+    </div>
+
+    <script>
+        function showView(viewId) {
+            document.querySelectorAll('.page-view').forEach(v => {
+                v.style.display = 'none';
+                v.classList.remove('active');
+            });
+
+            const targetView = document.getElementById(viewId);
+            if (targetView) {
+                targetView.style.display = 'block';
+                targetView.classList.add('active');
+            }
+
+            document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+            if(viewId === 'home') {
+                document.getElementById('link-home').classList.add('active');
+            } else if(['applications', 'whitelist', 'gang', 'police', 'ems'].includes(viewId)) {
+                document.getElementById('link-apps').classList.add('active');
+            } else if(viewId === 'rules') {
+                document.getElementById('link-rules').classList.add('active');
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // AJAX Handler for ALL Forms using the class '.ajax-form'
+        document.querySelectorAll('.ajax-form').forEach(form => {
+            form.addEventListener("submit", async function(event) {
+                event.preventDefault();
+                var currentForm = event.target;
+                var successMsg = currentForm.nextElementSibling; // Get the success message div right after the form
+                var data = new FormData(currentForm);
+
+                fetch(currentForm.action, {
+                    method: currentForm.method,
+                    body: data,
+                    headers: {
+                        'Accept': 'json'
+                    }
+                }).then(response => {
+                    if (response.ok) {
+                        currentForm.style.display = "none";
+                        if (successMsg) successMsg.style.display = "block";
+                    } else {
+                        alert("Oops! There was a problem submitting your form.");
+                    }
+                }).catch(error => {
+                    alert("Oops! There was a problem submitting your form.");
+                });
+            });
+        });
+    </script>
+</body>
+</html>
