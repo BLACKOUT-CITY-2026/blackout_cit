@@ -97,7 +97,7 @@
             <a onclick="showView('applications')" id="link-apps">Applications</a>
             <a onclick="showView('rules')" id="link-rules">Rules</a>
             <a onclick="showView('home')">Team</a>
-            <!-- Interactive Popup Login Button -->
+            <!-- زر الديسكورد بالـ Client ID الحقيقي -->
             <a class="discord-nav-btn" id="discordNavBtn" onclick="openDiscordPopup()">Join Discord 🔗</a>
         </div>
     </nav>
@@ -254,13 +254,10 @@
     </div>
 
     <script>
-        // Open Real Discord OAuth2 Popup
+        // Open Real Discord OAuth2 Popup with your actual Client ID
         function openDiscordPopup() {
-            // قم بتغيير CLIENT_ID بالـ Client ID الخاص بتطبيقك في Discord Developer Portal
-            // و REDIRECT_URI برابط موقعك الحقيقي (مثلاً رابط Netlify الخاص بك)
-            const clientId = "YOUR_DISCORD_CLIENT_ID"; 
+            const clientId = "1541857358907449474"; // الـ Client ID الحقيقي متاعك
             const redirectUri = encodeURIComponent(window.location.origin + window.location.pathname);
-            
             const discordAuthUrl = `https://discord.com/api/oauth2/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=token&scope=identify`;
             
             const width = 500;
@@ -268,7 +265,7 @@
             const left = (window.innerWidth - width) / 2;
             const top = (window.innerHeight - height) / 2;
             
-            const popup = window.open(discordAuthUrl, 'DiscordLogin', `width=${width},height=${height},top=${top},left=${left}`);
+            window.open(discordAuthUrl, 'DiscordLogin', `width=${width},height=${height},top=${top},left=${left}`);
         }
 
         // Check if Discord returned the access token in URL fragment after login
@@ -277,7 +274,6 @@
             if (hash && hash.includes('access_token')) {
                 const accessToken = hash.split('&').find(item => item.startsWith('#access_token') || item.includes('access_token')).split('=')[1];
                 
-                // Fetch user info from Discord API using the access token
                 fetch('https://discord.com/api/users/@me', {
                     headers: {
                         authorization: `Bearer ${accessToken}`
@@ -286,15 +282,13 @@
                 .then(res => res.json())
                 .then(response => {
                     if (response.username) {
-                        // الحصول على الاسم الحقيقي للمستخدم من ديسكورد
                         const userDiscordTag = response.discriminator && response.discriminator !== '0' 
                             ? `${response.username}#${response.discriminator}` 
-                            : response.username; // دعم الأسماء الحديثة بدون ديسكريمناتور أو القديمة
+                            : response.username;
 
                         localStorage.setItem('user_discord_id', userDiscordTag);
                         localStorage.setItem('is_verified', 'true');
                         
-                        // تنظيف رابط الصفحة بعد تسجيل الدخول
                         window.history.replaceState({}, document.title, window.location.pathname);
                         updateDiscordButton();
                     }
