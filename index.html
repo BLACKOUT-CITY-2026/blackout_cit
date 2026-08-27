@@ -21,7 +21,7 @@
         nav a:not(.nav-logo):hover, nav a.active { color: #fff; text-shadow: 0 0 12px rgba(255, 59, 48, 0.8); }
 
         /* Discord Button in Navbar */
-        .discord-nav-btn { background: #5865F2; color: #fff !important; padding: 8px 16px; border-radius: 6px; box-shadow: 0 0 10px rgba(88,101,242,0.4); transition: 0.3s; text-decoration: none; cursor: pointer; }
+        .discord-nav-btn { background: #5865F2; color: #fff !important; padding: 8px 16px; border-radius: 6px; box-shadow: 0 0 10px rgba(88,101,242,0.4); transition: 0.3s; text-decoration: none; cursor: pointer; display: inline-block; text-align: center; }
         .discord-nav-btn:hover { background: #4752c4; box-shadow: 0 0 15px rgba(88,101,242,0.8); color: #fff !important; }
 
         /* Home Hero Banner */
@@ -97,8 +97,7 @@
             <a onclick="showView('applications')" id="link-apps">Applications</a>
             <a onclick="showView('rules')" id="link-rules">Rules</a>
             <a onclick="showView('home')">Team</a>
-            <!-- زر الديسكورد بالـ Client ID الحقيقي -->
-            <a class="discord-nav-btn" id="discordNavBtn" onclick="openDiscordPopup()">Join Discord 🔗</a>
+            <a class="discord-nav-btn" id="discordNavBtn" href="#" onclick="redirectToDiscord()">Verify Discord 🔗</a>
         </div>
     </nav>
 
@@ -184,7 +183,7 @@
         <div class="form-wrapper">
             <h2>Whitelist Application</h2>
             <p class="desc">Submit your citizenship request</p>
-            <form id="whitelistForm" class="ajax-form" action="https://formspree.io/f/xrpzwzdy" method="POST">
+            <form id="whitelistForm" class="discord-webhook-form">
                 <div class="input-group"><label>Real Name</label><input type="text" name="realName" required></div>
                 <div class="input-group"><label>Character Name</label><input type="text" name="charName" required></div>
                 <div class="input-group"><label>Age</label><input type="number" name="age" required></div>
@@ -192,7 +191,7 @@
                 <div class="input-group"><label>Character Backstory</label><textarea name="backstory" required></textarea></div>
                 <button type="submit" class="submit-btn">Submit Application</button>
             </form>
-            <div class="success-message">Application Sent Successfully! ✅</div>
+            <div class="success-message">Application Sent to Discord Successfully! ✅</div>
             <a class="back-btn" onclick="showView('applications')">&larr; Back to Applications</a>
         </div>
     </div>
@@ -202,7 +201,7 @@
         <div class="form-wrapper">
             <h2>Gang / Org Application</h2>
             <p class="desc">Register your organization</p>
-            <form id="gangForm" class="ajax-form" action="https://formspree.io/f/xrpzwzdy" method="POST">
+            <form id="gangForm" class="discord-webhook-form">
                 <div class="input-group"><label>Discord Username</label><input type="text" name="discordId" class="discord-autofill" placeholder="Please verify via Discord first..." required readonly></div>
                 <div class="input-group"><label>Gang Name</label><input type="text" name="gangName" required></div>
                 <div class="input-group"><label>Number of Members</label><input type="number" name="membersCount" required></div>
@@ -210,7 +209,7 @@
                 <div class="input-group"><label>Gang Goals</label><textarea name="gangGoals" required></textarea></div>
                 <button type="submit" class="submit-btn">Submit Application</button>
             </form>
-            <div class="success-message">Application Sent Successfully! ✅</div>
+            <div class="success-message">Application Sent to Discord Successfully! ✅</div>
             <a class="back-btn" onclick="showView('applications')">&larr; Back to Applications</a>
         </div>
     </div>
@@ -220,7 +219,7 @@
         <div class="form-wrapper">
             <h2>Police Department Application</h2>
             <p class="desc">Enforce law and order</p>
-            <form id="policeForm" class="ajax-form" action="https://formspree.io/f/xrpzwzdy" method="POST">
+            <form id="policeForm" class="discord-webhook-form">
                 <div class="input-group"><label>Discord Username</label><input type="text" name="discordId" class="discord-autofill" placeholder="Please verify via Discord first..." required readonly></div>
                 <div class="input-group"><label>Character Name</label><input type="text" name="charName" required></div>
                 <div class="input-group"><label>Why do you want to join the LSPD?</label><textarea name="reason" required></textarea></div>
@@ -228,7 +227,7 @@
                 <div class="input-group"><label>Availability (Hours/Week)</label><input type="text" name="availability" required></div>
                 <button type="submit" class="submit-btn">Submit Application</button>
             </form>
-            <div class="success-message">Application Sent Successfully! ✅</div>
+            <div class="success-message">Application Sent to Discord Successfully! ✅</div>
             <a class="back-btn" onclick="showView('applications')">&larr; Back to Applications</a>
         </div>
     </div>
@@ -238,7 +237,7 @@
         <div class="form-wrapper">
             <h2>EMS Department Application</h2>
             <p class="desc">Provide medical services</p>
-            <form id="emsForm" class="ajax-form" action="https://formspree.io/f/xrpzwzdy" method="POST">
+            <form id="emsForm" class="discord-webhook-form">
                 <div class="input-group"><label>Discord Username</label><input type="text" name="discordId" class="discord-autofill" placeholder="Please verify via Discord first..." required readonly></div>
                 <div class="input-group"><label>Character Name</label><input type="text" name="charName" required></div>
                 <div class="input-group"><label>Why do you want to join EMS?</label><textarea name="reason" required></textarea></div>
@@ -248,57 +247,56 @@
                 </div>
                 <button type="submit" class="submit-btn">Submit Application</button>
             </form>
-            <div class="success-message">Application Sent Successfully! ✅</div>
+            <div class="success-message">Application Sent to Discord Successfully! ✅</div>
             <a class="back-btn" onclick="showView('applications')">&larr; Back to Applications</a>
         </div>
     </div>
 
     <script>
-        // Open Real Discord OAuth2 Popup with your actual Client ID
-        function openDiscordPopup() {
-            const clientId = "1541857358907449474"; // الـ Client ID الحقيقي متاعك
-            const redirectUri = encodeURIComponent(window.location.origin + window.location.pathname);
+        const DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1541902525899481188/FByzRDhk6yMAk-Kb4R0uwdB2ERcEjUnCYLLb_XdL3z4Ca3K__Zu7Y20KMD4nCwXnBVRD";
+
+        // Redirect directly in the same tab to Discord OAuth2
+        function redirectToDiscord() {
+            const clientId = "1541857358907449474"; 
+            const redirectUri = encodeURIComponent("https://blackout-city-2026.github.io/blackout_cit/");
             const discordAuthUrl = `https://discord.com/api/oauth2/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=token&scope=identify`;
             
-            const width = 500;
-            const height = 700;
-            const left = (window.innerWidth - width) / 2;
-            const top = (window.innerHeight - height) / 2;
-            
-            window.open(discordAuthUrl, 'DiscordLogin', `width=${width},height=${height},top=${top},left=${left}`);
+            window.location.href = discordAuthUrl;
         }
 
-        // Check if Discord returned the access token in URL fragment after login
+        // Handle Token on return and jump straight to Applications
         window.addEventListener('DOMContentLoaded', () => {
             const hash = window.location.hash;
             if (hash && hash.includes('access_token')) {
-                const accessToken = hash.split('&').find(item => item.startsWith('#access_token') || item.includes('access_token')).split('=')[1];
-                
-                fetch('https://discord.com/api/users/@me', {
-                    headers: {
-                        authorization: `Bearer ${accessToken}`
-                    }
-                })
-                .then(res => res.json())
-                .then(response => {
-                    if (response.username) {
-                        const userDiscordTag = response.discriminator && response.discriminator !== '0' 
-                            ? `${response.username}#${response.discriminator}` 
-                            : response.username;
+                try {
+                    const accessToken = hash.split('&').find(item => item.includes('access_token')).split('=')[1];
+                    
+                    fetch('https://discord.com/api/users/@me', {
+                        headers: { authorization: `Bearer ${accessToken}` }
+                    })
+                    .then(res => res.json())
+                    .then(response => {
+                        if (response.username) {
+                            const userDiscordTag = response.discriminator && response.discriminator !== '0' 
+                                ? `${response.username}#${response.discriminator}` 
+                                : response.username;
 
-                        localStorage.setItem('user_discord_id', userDiscordTag);
-                        localStorage.setItem('is_verified', 'true');
-                        
-                        window.history.replaceState({}, document.title, window.location.pathname);
-                        updateDiscordButton();
-                    }
-                }).catch(err => console.error('Failed to fetch user data', err));
+                            localStorage.setItem('user_discord_id', userDiscordTag);
+                            localStorage.setItem('is_verified', 'true');
+                            
+                            // Clean URL hash and go directly to applications view
+                            window.history.replaceState({}, document.title, window.location.pathname);
+                            showView('applications');
+                            updateDiscordButton();
+                        }
+                    }).catch(err => console.error('Failed to fetch user data', err));
+                } catch(e) { console.error(e); }
+            } else {
+                updateDiscordButton();
             }
-
-            updateDiscordButton();
         });
 
-        // Update Button and autofill forms with Real Discord Username
+        // Update button and auto-fill inputs
         function updateDiscordButton() {
             const savedDiscord = localStorage.getItem('user_discord_id');
             const isVerified = localStorage.getItem('is_verified');
@@ -310,6 +308,7 @@
                 if (navButton) {
                     navButton.innerText = `Verified: ${savedDiscord} ✅`;
                     navButton.style.background = '#2ecc71';
+                    navButton.removeAttribute('href');
                     navButton.removeAttribute('onclick');
                 }
             } else {
@@ -344,29 +343,39 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // AJAX Handler for ALL Forms using Formspree
-        document.querySelectorAll('.ajax-form').forEach(form => {
-            form.addEventListener("submit", async function(event) {
+        // Send form data directly to Discord via Webhook
+        document.querySelectorAll('.discord-webhook-form').forEach(form => {
+            form.addEventListener("submit", function(event) {
                 event.preventDefault();
-                var currentForm = event.target;
-                var successMsg = currentForm.nextElementSibling; 
-                var data = new FormData(currentForm);
+                const currentForm = event.target;
+                const successMsg = currentForm.nextElementSibling;
+                const formData = new FormData(currentForm);
+                
+                let formDetails = "";
+                formData.forEach((value, key) => {
+                    formDetails += `> **${key}:** ${value}\n`;
+                });
 
-                fetch(currentForm.action, {
-                    method: currentForm.method,
-                    body: data,
-                    headers: {
-                        'Accept': 'json'
-                    }
-                }).then(previousResponse => {
-                    if (previousResponse.ok) {
+                const payload = {
+                    content: `🚨 **New Application Submitted!**\n${formDetails}`
+                };
+
+                fetch(DISCORD_WEBHOOK_URL, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload)
+                })
+                .then(response => {
+                    if (response.ok) {
                         currentForm.style.display = "none";
                         if (successMsg) successMsg.style.display = "block";
                     } else {
-                        alert("Oops! There was a problem submitting your form.");
+                        alert("Failed to send application to Discord.");
                     }
-                }).catch(error => {
-                    alert("Oops! There was a problem submitting your form.");
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                    alert("Connection error while sending to Discord.");
                 });
             });
         });
